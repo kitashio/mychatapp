@@ -62,7 +62,7 @@ class _MyAuthPageState extends State<MyAuthPage> {
               TextFormField(
                 decoration: InputDecoration(labelText: "パスワード（６文字以上）"),
                 // パスワードが見えないようにする
-                obscureText: true,
+                // obscureText: true,
                 onChanged: (String value) {
                   setState(() {
                     newUserPassword = value;
