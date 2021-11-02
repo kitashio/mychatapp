@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'firestore_test.dart';
 
-Future<void> main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -12,11 +13,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyAuthPage(),
+      home: MyFirestorePage(),
     );
   }
 }
@@ -31,6 +34,10 @@ class _MyAuthPageState extends State<MyAuthPage> {
   String newUserEmail = "";
   // 入力されたパスワード
   String newUserPassword = "";
+  // 入力されたメールアドレス（ログイン）
+  String loginUserEmail = "";
+  // 入力されたパスワード（ログイン）
+  String loginUserPassword = "";
   // 登録・ログインに関する情報を表示
   String infoText = "";
 
@@ -87,6 +94,49 @@ class _MyAuthPageState extends State<MyAuthPage> {
                   }
                 },
                 child: Text("ユーザー登録"),
+              ),
+              const SizedBox(height: 32),
+              TextFormField(
+                decoration: InputDecoration(labelText: "メールアドレス"),
+                onChanged: (String value) {
+                  setState(() {
+                    loginUserEmail = value;
+                  });
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: "パスワード"),
+                obscureText: true,
+                onChanged: (String value) {
+                  setState(() {
+                    loginUserPassword = value;
+                  });
+                },
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    // メール/パスワードでログイン
+                    final FirebaseAuth auth = FirebaseAuth.instance;
+                    final UserCredential result =
+                    await auth.signInWithEmailAndPassword(
+                      email: loginUserEmail,
+                      password: loginUserPassword,
+                    );
+                    // ログインに成功した場合
+                    final User user = result.user;
+                    setState(() {
+                      infoText = "ログインOK：${user.email}";
+                    });
+                  } catch (e) {
+                    // ログインに失敗した場合
+                    setState(() {
+                      infoText = "ログインNG：${e.toString()}";
+                    });
+                  }
+                },
+                child: Text("ログイン"),
               ),
               const SizedBox(height: 8),
               Text(infoText)
