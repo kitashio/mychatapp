@@ -14,7 +14,7 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('チャット'),
+        title: Text('チャッ'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.logout),
