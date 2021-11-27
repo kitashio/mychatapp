@@ -2,17 +2,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'Login_page.dart';
 import 'addpost_page.dart';
+import 'main.dart';
 
 class ChatPage extends StatelessWidget {
-  // 引数からユーザー情報を受け取れるようにする
-  ChatPage(this.user);
-  // ユーザー情報
-  final User user;
+  ChatPage();
 
   @override
   Widget build(BuildContext context) {
+    // ユーザー情報を受け取る
+    final UserState userState = Provider.of<UserState>(context);
+    final User user = userState.user;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('チャット'),
@@ -89,7 +92,7 @@ class ChatPage extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) {
               // 引数からユーザー情報を渡す
-              return AddPostPage(user);
+              return AddPostPage();
             }),
           );
         },
