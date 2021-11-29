@@ -14,11 +14,9 @@ class UserState extends ChangeNotifier {
   }
 }
 
-void main() async {
-  //Firebase初期化
+Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // 最初に表示するWidget
   runApp(MyApp());
 }
 
@@ -31,14 +29,12 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider<UserState>(
       create: (context) => UserState(),
       child: MaterialApp(
-      // アプリ名
-      title: 'ChatApp',
-      theme: ThemeData(
-        // テーマカラー
-        primarySwatch: Colors.blue,
-      ),
-      // ログイン画面を表示
-      home: LoginPage(),
+        theme: ThemeData(
+          // テーマカラー
+          primarySwatch: Colors.blue,
+        ),
+        // ログイン画面を表示
+        home: LoginPage(),
       ),
     );
   }
